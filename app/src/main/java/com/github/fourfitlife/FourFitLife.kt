@@ -6,5 +6,6 @@ import com.github.fourfitlife.helpers.SharedPreferencesHelper
 class FourFitLife: Application() {
     override fun onCreate() {
         super.onCreate()
+        SharedPreferencesHelper(this)
     }
 }
