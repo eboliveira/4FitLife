@@ -1,4 +1,4 @@
-package com.github.fourfitlife.ui.data.models
+package com.github.fourfitlife.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
