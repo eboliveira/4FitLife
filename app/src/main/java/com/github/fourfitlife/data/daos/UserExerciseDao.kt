@@ -8,8 +8,8 @@ import com.github.fourfitlife.data.models.UserExercise
 @Dao
 interface UserExerciseDao {
     @Insert
-    fun insertAll(vararg userExercises: List<UserExercise>)
+    fun insertAll(userExercises: List<UserExercise>)
 
-    @Query("DELETE FROM userexercise")
+    @Query("DELETE FROM user_exercise")
     fun clean()
 }

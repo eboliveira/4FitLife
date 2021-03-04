@@ -1,6 +1,7 @@
 package com.github.fourfitlife.data.models
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
@@ -8,8 +9,13 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 data class Exercise(
-    @PrimaryKey val id: String,
+    @PrimaryKey
+    @ColumnInfo(name = "exercise_id")
+    val id: String,
+
     val name: String,
-    val instructions: List<String>,
-    @ColumnInfo(name = "affected_muscles") val affectedMuscles: List<AffectedMuscle>
+
+    val instructions: ArrayList<String>,
+
+    val affectedMuscles: ArrayList<AffectedMuscle>
 )

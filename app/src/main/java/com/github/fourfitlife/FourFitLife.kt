@@ -6,11 +6,14 @@ import com.github.fourfitlife.data.DatabaseInterface
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 
 class FourFitLife : Application() {
+    companion object {
+        lateinit var db: DatabaseInterface
+    }
 
     override fun onCreate() {
         super.onCreate()
-        SharedPreferencesHelper
-        DatabaseInterface.instance = Room.databaseBuilder(
+        SharedPreferencesHelper(this)
+        db = Room.databaseBuilder(
             applicationContext,
             DatabaseInterface::class.java, "four-fit-life"
         ).build()
