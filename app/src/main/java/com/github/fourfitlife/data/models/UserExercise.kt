@@ -4,7 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import java.util.*
 
 @Entity(tableName = "user_exercise")
 @Serializable
@@ -19,5 +21,8 @@ data class UserExercise(
     val repetitions: Int?,
 
     @ColumnInfo(name = "seconds_time")
-    val secondsTime: Int?
+    val secondsTime: Int?,
+
+    @Contextual
+    val date: Date
 )
