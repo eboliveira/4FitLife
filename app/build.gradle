@@ -31,6 +31,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\day', 'src\\main\\res\\layouts\\week', 'src\\main\\res\\layouts\\month'
+            }
+        }
+    }
 }
 
 apply plugin: 'kotlin-kapt'
