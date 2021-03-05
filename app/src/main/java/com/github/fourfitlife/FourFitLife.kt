@@ -2,7 +2,7 @@ package com.github.fourfitlife
 
 import android.app.Application
 import androidx.room.Room
-import com.github.fourfitlife.data.DatabaseInterface
+import com.github.fourfitlife.data.local.DatabaseInterface
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 
 class FourFitLife : Application() {

@@ -1,4 +1,4 @@
-package com.github.fourfitlife.data
+package com.github.fourfitlife.data.local
 
 import androidx.room.TypeConverter
 import com.github.fourfitlife.data.models.AffectedMuscle

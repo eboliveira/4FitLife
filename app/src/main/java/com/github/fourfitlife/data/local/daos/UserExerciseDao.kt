@@ -1,4 +1,4 @@
-package com.github.fourfitlife.data.daos
+package com.github.fourfitlife.data.local.daos
 
 import androidx.room.Dao
 import androidx.room.Insert

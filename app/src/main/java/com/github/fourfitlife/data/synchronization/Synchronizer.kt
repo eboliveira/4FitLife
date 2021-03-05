@@ -1,9 +1,6 @@
 package com.github.fourfitlife.data.synchronization
 
 import com.github.fourfitlife.FourFitLife
-import com.github.fourfitlife.data.DatabaseInterface
-import com.github.fourfitlife.data.daos.UserExerciseDao
-import com.github.fourfitlife.data.models.UserExercise
 import com.github.fourfitlife.data.remote.Api
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 import kotlinx.coroutines.Dispatchers
