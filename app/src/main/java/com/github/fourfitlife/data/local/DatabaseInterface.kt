@@ -11,5 +11,9 @@ import com.github.fourfitlife.data.models.UserExercise
     exportSchema = false)
 @TypeConverters(RoomConverters::class)
 abstract class DatabaseInterface : RoomDatabase() {
+    companion object {
+        lateinit var db: DatabaseInterface
+    }
+
     abstract fun userExerciseDao(): UserExerciseDao
 }

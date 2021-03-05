@@ -1,6 +1,7 @@
 package com.github.fourfitlife.data.synchronization
 
 import com.github.fourfitlife.FourFitLife
+import com.github.fourfitlife.data.local.DatabaseInterface
 import com.github.fourfitlife.data.remote.Api
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,8 @@ class Synchronizer {
                 if (userExercises == null || userExercises.isEmpty())
                     return@withContext
 
-                FourFitLife.db.userExerciseDao().clean()
-                FourFitLife.db.userExerciseDao().insertAll(userExercises)
+                DatabaseInterface.db.userExerciseDao().clean()
+                DatabaseInterface.db.userExerciseDao().insertAll(userExercises)
                 SynchronizerInterface.notify(true)
             } else {
                 SynchronizerInterface.notify(false)
