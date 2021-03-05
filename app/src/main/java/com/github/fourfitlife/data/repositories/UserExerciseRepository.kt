@@ -1,14 +1,12 @@
 package com.github.fourfitlife.data.repositories
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.github.fourfitlife.data.local.DatabaseInterface
 import com.github.fourfitlife.data.models.UserExercise
 import com.github.fourfitlife.data.remote.Api
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,11 +15,7 @@ import java.util.*
 
 class UserExerciseRepository {
     companion object {
-        private val userExercises: LiveData<List<UserExercise>> = DatabaseInterface.db.userExerciseDao().getAll()
-
-        fun getForDay(date: Date): LiveData<List<UserExercise>> {
-            return userExercises
-        }
+        val userExercises: LiveData<List<UserExercise>> = DatabaseInterface.db.userExerciseDao().getAll()
 
         suspend fun refresh() = withContext(Dispatchers.IO) {
             val userId = SharedPreferencesHelper.userId
@@ -34,10 +28,11 @@ class UserExerciseRepository {
                     val userExercises = response.body()
                     if (userExercises == null || userExercises.isEmpty())
                         return
-
-                    launch {
-                        DatabaseInterface.db.userExerciseDao().clean()
-                        DatabaseInterface.db.userExerciseDao().insertAll(userExercises)
+                    runBlocking {
+                        withContext(Dispatchers.IO) {
+                            DatabaseInterface.db.userExerciseDao().clean()
+                            DatabaseInterface.db.userExerciseDao().insertAll(userExercises)
+                        }
                     }
                 }
 

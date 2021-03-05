@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class Api {
     companion object {
-        private const val baseUrl = " https://89aa30943972.ngrok.io"
+        private const val baseUrl = " https://19aa01c0c423.ngrok.io"
         private val client = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())

@@ -1,13 +1,12 @@
 package com.github.fourfitlife.ui.day
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.fourfitlife.data.models.UserExercise
+import com.github.fourfitlife.data.repositories.UserExerciseRepository
 
+// TODO Refactor this to be dynamic and can be used by other classes. It requires to implement Factory
+// https://developer.android.com/codelabs/kotlin-android-training-view-model#7
 class DayViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is day Fragment"
-    }
-    val text: LiveData<String> = _text
+    val userExercises: LiveData<List<UserExercise>> = UserExerciseRepository.userExercises
 }

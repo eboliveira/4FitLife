@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.fourfitlife.R
 import com.github.fourfitlife.databinding.FragmentDayBinding
+import java.util.*
 
 class DayFragment : Fragment() {
     private lateinit var dayViewModel: DayViewModel
