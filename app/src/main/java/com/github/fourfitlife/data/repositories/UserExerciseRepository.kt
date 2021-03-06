@@ -1,6 +1,7 @@
 package com.github.fourfitlife.data.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.github.fourfitlife.data.local.DatabaseInterface
 import com.github.fourfitlife.data.models.UserExercise
 import com.github.fourfitlife.data.remote.Api
@@ -15,7 +16,8 @@ import java.util.*
 
 class UserExerciseRepository {
     companion object {
-        val userExercises: LiveData<List<UserExercise>> = DatabaseInterface.db.userExerciseDao().getAll()
+        val userExercises: LiveData<List<UserExercise>> =
+            DatabaseInterface.getDatabase().userExerciseDao().getAll()
 
         suspend fun refresh() = withContext(Dispatchers.IO) {
             val userId = SharedPreferencesHelper.userId
@@ -25,13 +27,11 @@ class UserExerciseRepository {
                     call: Call<List<UserExercise>>,
                     response: Response<List<UserExercise>>,
                 ) {
-                    val userExercises = response.body()
-                    if (userExercises == null || userExercises.isEmpty())
-                        return
+                    val userExercises = response.body() ?: return
                     runBlocking {
                         withContext(Dispatchers.IO) {
-                            DatabaseInterface.db.userExerciseDao().clean()
-                            DatabaseInterface.db.userExerciseDao().insertAll(userExercises)
+                            DatabaseInterface.getDatabase().userExerciseDao().clean()
+                            DatabaseInterface.getDatabase().userExerciseDao().insertAll(userExercises)
                         }
                     }
                 }
