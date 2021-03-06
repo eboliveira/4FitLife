@@ -1,12 +1,9 @@
-package com.github.fourfitlife.data
+package com.github.fourfitlife.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.github.fourfitlife.data.daos.UserExerciseDao
-import com.github.fourfitlife.data.models.AffectedMuscle
-import com.github.fourfitlife.data.models.Exercise
-import com.github.fourfitlife.data.models.Muscle
+import com.github.fourfitlife.data.local.daos.UserExerciseDao
 import com.github.fourfitlife.data.models.UserExercise
 
 @Database(entities = [UserExercise::class],
@@ -14,5 +11,9 @@ import com.github.fourfitlife.data.models.UserExercise
     exportSchema = false)
 @TypeConverters(RoomConverters::class)
 abstract class DatabaseInterface : RoomDatabase() {
+    companion object {
+        lateinit var db: DatabaseInterface
+    }
+
     abstract fun userExerciseDao(): UserExerciseDao
 }

@@ -7,11 +7,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.github.fourfitlife.data.synchronization.Synchronizer
+import com.github.fourfitlife.data.repositories.UserExerciseRepository
 import com.github.fourfitlife.helpers.SharedPreferencesHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         SharedPreferencesHelper.userId = "603919060e85ae02ac9d438a"
 
         launch {
-            Synchronizer.run()
+            UserExerciseRepository.refresh()
         }
         setContentView(R.layout.activity_main)
         setupActionBar()

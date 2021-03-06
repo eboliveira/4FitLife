@@ -1,5 +1,6 @@
-package com.github.fourfitlife.data.daos
+package com.github.fourfitlife.data.local.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -18,5 +19,5 @@ interface UserExerciseDao {
     fun getForDay(date: Date): Array<UserExercise>
 
     @Query("SELECT * FROM user_exercise")
-    fun getAll(): Array<UserExercise>
+    fun getAll(): LiveData<List<UserExercise>>
 }
