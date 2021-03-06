@@ -16,5 +16,9 @@ class UserExerciseFactory {
         ): UserExercise {
             return UserExercise(id, exercise, repetitions, secondsTime, date)
         }
+
+        fun getList(size: Int): List<UserExercise> {
+            return (0 until size).map { return@map getOne() }
+        }
     }
 }

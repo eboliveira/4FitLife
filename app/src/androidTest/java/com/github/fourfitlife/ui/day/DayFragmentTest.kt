@@ -6,22 +6,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.github.fourfitlife.R
-import com.github.fourfitlife.data.local.DatabaseInterface
-import com.github.fourfitlife.data.local.daos.UserExerciseDao
 import com.github.fourfitlife.data.models.UserExercise
+import com.github.fourfitlife.data.repositories.UserExerciseRepository
 import factories.ExerciseFactory
 import factories.UserExerciseFactory
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import io.mockk.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -29,52 +22,14 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class DayFragmentTest {
-    lateinit var daoMock: UserExerciseDao
-    lateinit var userExercises: MutableLiveData<List<UserExercise>>
-
     @Before
     fun setUpMocks() {
-        mockkStatic(DatabaseInterface::class)
-        val databaseMock = mockk<DatabaseInterface>()
-        daoMock = mockk()
-        val userExercise = UserExerciseFactory.getOne()
-        userExercises = MutableLiveData(listOf(userExercise))
-
-        every { DatabaseInterface.getDatabase() } returns databaseMock
-        every { databaseMock.userExerciseDao() } returns daoMock
-        every { daoMock.getAll() } returns userExercises
-    }
-
-    @Test
-    fun launchFragmentAndCheckRecyclerViewVisibility() {
-        with(launchFragmentInContainer<DayFragment>()) {
-            moveToState(Lifecycle.State.RESUMED)
-            onView(withId(R.id.user_exercise_recycler_view)).check(matches(isDisplayed()))
-        }
+        mockkStatic(UserExerciseRepository::class)
     }
 
     @Test
     fun launchFragmentAndCheckRecyclerViewSize() {
-        with(launchFragmentInContainer<DayFragment>()) {
-            moveToState(Lifecycle.State.RESUMED)
-            onView(withId(R.id.user_exercise_recycler_view)).check { view, _ ->
-                check((view as RecyclerView).adapter?.itemCount == 1)
-            }
-        }
-    }
-
-    @Test
-    fun launchFragmentAndCheckRecyclerCardNameExists() {
-        with(launchFragmentInContainer<DayFragment>()) {
-            moveToState(Lifecycle.State.RESUMED)
-            val factoryExerciseName = ExerciseFactory.getOne().name
-            onView(withText(factoryExerciseName)).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    fun launchFragmentAndCheckRecyclerViewWhenItsEmpty() {
-        every { daoMock.getAll() } returns MutableLiveData(listOf())
+        setRepositoryMock(MutableLiveData())
 
         with(launchFragmentInContainer<DayFragment>()) {
             moveToState(Lifecycle.State.RESUMED)
@@ -87,26 +42,39 @@ class DayFragmentTest {
     }
 
     @Test
-    fun launchFragmentAndWaitInsertionAndVerifyItemAddedOnRecyclerView() {
+    fun launchFragmentAndCheckRecyclerCardNameExists() {
+        val userExercise = UserExerciseFactory.getOne()
+       setRepositoryMock(MutableLiveData(listOf(userExercise)))
+
         with(launchFragmentInContainer<DayFragment>()) {
             moveToState(Lifecycle.State.RESUMED)
 
-            val userExercise = UserExerciseFactory.getOne()
-            val anotherExerciseName = "another_exercise_name"
-            val exercise = ExerciseFactory.getOne(name = anotherExerciseName)
-            val userExercise2 = UserExerciseFactory.getOne(exercise = exercise)
-            val factoryExerciseName = ExerciseFactory.getOne().name
-            runBlocking {
-                withContext(Dispatchers.Main) {
-                    userExercises.postValue(listOf(userExercise, userExercise2))
-                }
-            }
-
             onView(withId(R.id.user_exercise_recycler_view)).check { view, _ ->
-                check((view as RecyclerView).adapter?.itemCount == 2)
+                check((view as RecyclerView).adapter?.itemCount == 1)
             }
-            onView(withText(factoryExerciseName)).check(matches(isDisplayed()))
-            onView(withText(anotherExerciseName)).check(matches(isDisplayed()))
+            onView(withText(userExercise.exercise.name)).check(matches(isDisplayed()))
         }
+    }
+
+    @Test
+    fun launchFragmentAndWaitInsertionAndVerifyItemAddedOnRecyclerView() {
+        val listSize = 2
+        val userExercises = UserExerciseFactory.getList(listSize)
+        setRepositoryMock(MutableLiveData(userExercises))
+
+
+        with(launchFragmentInContainer<DayFragment>()) {
+            moveToState(Lifecycle.State.RESUMED)
+            onView(withId(R.id.user_exercise_recycler_view)).check { view, _ ->
+                check((view as RecyclerView).adapter?.itemCount == listSize)
+            }
+            onView(withText(userExercises[0].exercise.name)).check(matches(isDisplayed()))
+            onView(withText(userExercises[1].exercise.name)).check(matches(isDisplayed()))
+        }
+    }
+
+
+    private fun setRepositoryMock(userExercises: MutableLiveData<List<UserExercise>>) {
+        every { UserExerciseRepository.userExercises } returns userExercises
     }
 }
