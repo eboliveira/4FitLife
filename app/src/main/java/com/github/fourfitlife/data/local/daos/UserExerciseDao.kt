@@ -16,7 +16,7 @@ interface UserExerciseDao {
     fun clean()
 
     @Query("SELECT * FROM user_exercise where date = :date")
-    fun getForDay(date: Date): Array<UserExercise>
+    fun getForDay(date: Date): LiveData<List<UserExercise>>
 
     @Query("SELECT * FROM user_exercise")
     fun getAll(): LiveData<List<UserExercise>>
