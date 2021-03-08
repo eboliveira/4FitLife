@@ -37,6 +37,10 @@ android {
                 srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\day', 'src\\main\\res\\layouts\\week', 'src\\main\\res\\layouts\\month'
             }
         }
+
+        test {
+            java.srcDirs += "src\\androidTest\\java\\factories"
+        }
     }
     buildFeatures {
         dataBinding true
@@ -68,6 +72,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.10.6'
+    androidTestImplementation 'android.arch.core:core-testing:1.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
